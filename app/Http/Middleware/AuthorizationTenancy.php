@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthorizationTenancy
 {
@@ -17,13 +18,12 @@ class AuthorizationTenancy
     public function handle(Request $request, Closure $next)
     {
         /** @var \App\Models\User $user */
-        $user = auth()->user();
+        $user = Auth::user();
 
         if (!$user) return abort(401);
 
         if ($tenantID = tenant('id')) {
             if ($user->isTenantAllowed($tenantID)) return $next($request);
-
             return abort(403);
         }
 

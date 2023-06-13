@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
@@ -31,7 +32,17 @@ Route::middleware([
         return \App\Models\Tenant\Setting::all();
     });
 
-    Route::middleware(['auth:sanctum','authenancy'])->group(function() {
+    Route::get('access', function(\Illuminate\Http\Request $request) {
+        if ($token = $request->get('token'))
+        {
+            $userID = (string) Str::of(decrypt($token))->remove('auth:', '');
+            auth()->loginUsingId($userID);
+            return redirect('/info');
+        }
+        return abort(406);
+    });
+
+    Route::middleware(['authenancy'])->group(function() {
         Route::get('/info', function () {
             return 'INFO ['. tenant('id') .']';
         });
