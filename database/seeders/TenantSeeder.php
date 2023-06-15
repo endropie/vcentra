@@ -19,8 +19,9 @@ class TenantSeeder extends Seeder
 
         $this->dropDBTenants();
 
-        $no = rand(500,599);
-        for ($i=0; $i < rand(5,10); $i++) {
+        $ex = ['aaa', 'bbb', 'ccc', 'ddd'];
+        $no = 500;
+        for ($i=0; $i < count($ex); $i++) {
             $name = "user-". $no+$i;
             $request = new Request([
                 "name" => $name,
@@ -37,7 +38,7 @@ class TenantSeeder extends Seeder
 
             /** @var \App\Http\Resource $res **/
             $res = app(\App\Http\ApiControllers\TenantController::class)->store(new Request([
-                "id" => "tenant-". $no+$i,
+                "id" => $ex[$i],
             ]));
             $tenant = $res->resource;
 

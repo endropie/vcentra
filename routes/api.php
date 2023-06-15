@@ -18,6 +18,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/ok', function (Request $request) {
+    return $request->cookie();
+});
+
 Route::prefix('auth')->group(function () {
     Route::post('/login', 'App\Http\ApiControllers\AuthController@login');
     Route::post('/register', 'App\Http\ApiControllers\AuthController@register');

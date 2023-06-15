@@ -32,11 +32,32 @@ const token = usePage().props.token;
                                         {{tenant.tenancy_db_name}}
                                     </p>
                                     </div>
-                                    <a
-                                        :href="`http://${tenant.redirect_link}/access?token=${token}`"
-                                        class="px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2">
-                                        Access
-                                    </a>
+                                    <div class="flex flex-col gap-2">
+                                        <a
+                                            :href="`http://${tenant.redirect_link}/access?app=app-1&token=${token}`"
+                                            :target="`app_${tenant.id}`"
+                                            class="px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2">
+                                            APP-1
+                                        </a>
+                                        <a
+                                            :href="`http://${tenant.redirect_link}/access?app=app-2&token=${token}`"
+                                            :target="`app_${tenant.id}`"
+                                            class="px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2">
+                                            APP-2
+                                        </a>
+                                        <a
+                                            :href="`http://${tenant.redirect_link}/access?app=app-3&token=${token}`"
+                                            :target="`app_${tenant.id}`"
+                                            class="px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2">
+                                            APP-3
+                                        </a>
+                                        <a
+                                            :href="`http://${tenant.redirect_link}/access?app=app-4&token=${token}`"
+                                            :target="`app_${tenant.id}`"
+                                            class="px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2">
+                                            APP-4
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </span>

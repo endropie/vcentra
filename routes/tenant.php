@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
@@ -24,8 +26,8 @@ Route::middleware([
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
-    Route::get('/', function () {
-        return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
+    Route::middleware(['authenancy'])->get('/', function () {
+        return view('tenance');
     });
 
     Route::get('settings', function() {
@@ -37,14 +39,20 @@ Route::middleware([
         {
             $userID = (string) Str::of(decrypt($token))->remove('auth:', '');
             auth()->loginUsingId($userID);
-            return redirect('/info');
+            return redirect("/". $request->get('app') ."/#/");
         }
         return abort(406);
     });
 
     Route::middleware(['authenancy'])->group(function() {
-        Route::get('/info', function () {
-            return 'INFO ['. tenant('id') .']';
+        Route::get('/app-1', function () {
+            return response((Http::accept('*/*')->get(env('HOST_APP1')))->body());
+        });
+        Route::get('/app-2', function () {
+            return response((Http::accept('*/*')->get(env('HOST_APP2')))->body());
+        });
+        Route::get('/app-3', function () {
+            return response((Http::accept('*/*')->get(env('HOST_APP3')))->body());
         });
     });
 });
