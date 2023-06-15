@@ -9,6 +9,7 @@ services:
             args:
                 WWWGROUP: '${WWWGROUP}'
         image: sail-8.2/app
+        restart: always
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
@@ -29,6 +30,7 @@ services:
     virmata.redis:
         container_name: virmata.redis
         image: 'redis:alpine'
+        restart: always
         ports:
             - '${FORWARD_REDIS_PORT:-6379}:6379'
         volumes:
