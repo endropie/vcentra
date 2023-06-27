@@ -38,12 +38,12 @@ const verificationLinkSent = computed(() => props.status === 'verification-link-
                     Resend Verification Email
                 </PrimaryButton>
 
-                <Link
+                <a
                     :href="route('logout')"
                     method="post"
                     as="button"
                     class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >Log Out</Link
+                    >Log Out</a
                 >
             </div>
         </form>

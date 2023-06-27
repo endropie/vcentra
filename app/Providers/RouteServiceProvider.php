@@ -18,6 +18,7 @@ class RouteServiceProvider extends ServiceProvider
      * @var string
      */
     public const HOME = '/dashboard';
+    // public const HOME = route('dashboard');
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
@@ -42,10 +43,19 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapWebRoutes()
     {
         foreach ($this->centralDomains() as $domain) {
-            Route::middleware('web')
-                ->domain($domain)
-                ->namespace($this->namespace)
-                ->group(base_path('routes/web.php'));
+            if ($domain == config("system.domain_account"))
+            {
+                Route::middleware('web')
+                    ->domain($domain)
+                    ->namespace($this->namespace)
+                    ->group(base_path('routes/account.php'));
+            }
+            else {
+                Route::middleware('web')
+                    ->domain($domain)
+                    ->namespace($this->namespace)
+                    ->group(base_path('routes/web.php'));
+            }
         }
     }
 

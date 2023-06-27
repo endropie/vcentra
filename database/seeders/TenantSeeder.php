@@ -69,7 +69,7 @@ class TenantSeeder extends Seeder
     protected function dropDBTenants()
     {
         foreach (DB::select('SHOW DATABASES') as $ob) {
-            if(Str::of($ob->Database)->startsWith(config('tenancy.database.prefix')))
+            if(stringable($ob->Database)->startsWith(config('tenancy.database.prefix')))
             {
                 DB::statement("DROP DATABASE `{$ob->Database}`");
             }

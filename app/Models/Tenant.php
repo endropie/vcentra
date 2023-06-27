@@ -49,7 +49,7 @@ class Tenant extends BaseTenant implements TenantWithDatabase
         });
 
         static::created(function (self $model) {
-            $domainName = $model->id.".". env('APP_DOMAIN', 'localhost');
+            $domainName = $model->id;
             $model->domains()->create(['domain' => $domainName]);
         });
     }

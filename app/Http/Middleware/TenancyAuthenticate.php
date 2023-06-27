@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class AuthorizationTenancy
+class TenancyAuthenticate
 {
     /**
      * Set this property if you want to customize the on-fail behavior.

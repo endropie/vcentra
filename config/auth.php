@@ -40,6 +40,16 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'api' => [
+            'driver' => 'jwt',
+            'provider' => 'users',
+        ],
+        'token' => [
+            'driver' => 'jwt-token',
+        ],
+        'tokenance' => [
+            'driver' => 'jwt-token-tenance',
+        ],
     ],
 
     /*

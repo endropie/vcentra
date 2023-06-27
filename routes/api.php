@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,24 +15,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::middleware(["auth"])->get('/check', function (Request $request) {
 
-Route::get('/ok', function (Request $request) {
-    return $request->cookie();
+    $auth = auth('tokenance');
+    $user = $auth->user();
+
+    /** @var App\Extensions\AuthTenancy\Guards\TokenTenanceGuard $auth */
+    /** @var Endropie\LumenAuthToken\Support\TokenUser $user */
+
+    return response()->json([
+        "user" => $user->toArray(),
+        "tenance" => $auth->tenance(),
+    ]);
 });
 
 Route::prefix('auth')->group(function () {
     Route::post('/login', 'App\Http\ApiControllers\AuthController@login');
     Route::post('/register', 'App\Http\ApiControllers\AuthController@register');
     Route::post('/register-login', 'App\Http\ApiControllers\AuthController@registerAndLogin');
-    Route::middleware('auth:sanctum')->get('/user', 'App\Http\ApiControllers\AuthController@user');
-
-});
-
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/access-tenants', function () {
-        return auth()->user()->access_tenants;
-    });
+    Route::middleware('auth:api')->get('/user', 'App\Http\ApiControllers\AuthController@user');
 });

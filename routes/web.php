@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -25,22 +25,23 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    /** @var \App\Models\User $user */
-    $user = auth()->user();
-    $token = encrypt("auth:$user->id");
-    $tenants = $user->access_tenants->map(fn($e) => array_merge($e->toArray(), ['redirect_link' => $e->domains->first()->domain ?? null]));
+$assetFn = function ($name, $fileURL) {
+    $url = config("system.apps.$name.host") ."/$fileURL";
+    $response = Http::get($url);
+    $file = explode('.', $fileURL);
 
-    return Inertia::render('Dashboard', [
-        "tenants" => $tenants,
-        "token" => $token,
-    ]);
-})->middleware(['auth', 'verified'])->name('dashboard');
+    switch (end($file)) {
+        case 'js': return response($response)->header('Content-Type', 'text/javascript');
+        case 'css': return response($response)->header('Content-Type', 'text/css');
+        default:
+        if (in_array(end($file), ['ico', 'png', 'jpg', 'jpeg'])) {
+            return response($response)->header('Content-Type', 'image/webp,image/avif,image/apng');
+        }
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+    }
+    return response($response);
+};
 
-require __DIR__.'/auth.php';
+Route::get('/vbuild/{name}/{fileURL}', $assetFn)->where('fileURL', '.*');
+
+require __DIR__.'/account.php';
